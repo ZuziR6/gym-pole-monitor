@@ -22,7 +22,4 @@ O sensor ultrassônico será utilizado para detectar a presença de uma pessoa n
 * 🔴 Vermelho: estação ocupada
 * 🔵 Azul: estação em manutenção
 
-O botão será utilizado para simular a ativação do modo de manutenção.
-
-![Montagem inicial do circuito](./imagens/circuito-inicial.png)
-
+O botão será utilizado para simular a ativação do modo de manutenção, mas a pretenção é criar um aplicativo em nuvem para os próprios funcionários da academia colocarem manualmente que a polia está em manutenção.
