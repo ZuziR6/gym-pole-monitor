@@ -81,25 +81,114 @@ export default function App() {
     }
   }
 
+  const availableStations = stations.filter(
+    (station) => station.status === 'available',
+  ).length;
+
+  const occupiedStations = stations.filter(
+    (station) => station.status === 'occupied',
+  ).length;
+
+  const maintenanceStations = stations.filter(
+    (station) => station.status === 'maintenance',
+  ).length;
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Cabeçalho */}
         <View style={styles.header}>
           <Text style={styles.title}>Gym Pole Monitor</Text>
 
           <Text style={styles.subtitle}>
-            Monitoramento das estações de polia
+            Painel de monitoramento
           </Text>
+
+          <View style={styles.employeeBadge}>
+            <Text style={styles.employeeText}>
+              Funcionário
+            </Text>
+          </View>
         </View>
 
-        <Text style={styles.sectionTitle}>Estações</Text>
+        {/* Resumo */}
+        <Text style={styles.sectionTitle}>
+          Visão geral
+        </Text>
+
+        <View style={styles.summaryContainer}>
+          <View style={styles.summaryCard}>
+            <View
+              style={[
+                styles.summaryIndicator,
+                { backgroundColor: '#16a34a' },
+              ]}
+            />
+
+            <Text style={styles.summaryNumber}>
+              {availableStations}
+            </Text>
+
+            <Text style={styles.summaryLabel}>
+              Disponíveis
+            </Text>
+          </View>
+
+          <View style={styles.summaryCard}>
+            <View
+              style={[
+                styles.summaryIndicator,
+                { backgroundColor: '#dc2626' },
+              ]}
+            />
+
+            <Text style={styles.summaryNumber}>
+              {occupiedStations}
+            </Text>
+
+            <Text style={styles.summaryLabel}>
+              Ocupadas
+            </Text>
+          </View>
+
+          <View style={styles.summaryCard}>
+            <View
+              style={[
+                styles.summaryIndicator,
+                { backgroundColor: '#2563eb' },
+              ]}
+            />
+
+            <Text style={styles.summaryNumber}>
+              {maintenanceStations}
+            </Text>
+
+            <Text style={styles.summaryLabel}>
+              Manutenção
+            </Text>
+          </View>
+        </View>
+
+        {/* Estações */}
+        <Text style={styles.sectionTitle}>
+          Estações
+        </Text>
 
         {stations.map((station) => (
-          <View key={station.id} style={styles.card}>
+          <View key={station.id} style={styles.stationCard}>
             <View style={styles.cardHeader}>
-              <Text style={styles.stationName}>
-                {station.name}
-              </Text>
+              <View>
+                <Text style={styles.stationName}>
+                  {station.name}
+                </Text>
+
+                <Text style={styles.stationDescription}>
+                  Estação de polia
+                </Text>
+              </View>
 
               <View
                 style={[
@@ -131,7 +220,9 @@ export default function App() {
                   station.status === 'maintenance' &&
                     styles.releaseButton,
                 ]}
-                onPress={() => toggleMaintenance(station.id)}
+                onPress={() =>
+                  toggleMaintenance(station.id)
+                }
               >
                 <Text style={styles.buttonText}>
                   {station.status === 'maintenance'
@@ -139,6 +230,14 @@ export default function App() {
                     : 'Colocar em manutenção'}
                 </Text>
               </Pressable>
+            )}
+
+            {station.status === 'occupied' && (
+              <View style={styles.occupiedInfo}>
+                <Text style={styles.occupiedInfoText}>
+                  Ocupação detectada pelo sensor
+                </Text>
+              </View>
             )}
           </View>
         ))}
@@ -155,32 +254,84 @@ const styles = StyleSheet.create({
 
   content: {
     padding: 20,
+    maxWidth: 900,
+    width: '100%',
+    alignSelf: 'center',
   },
 
   header: {
-    marginBottom: 30,
+    marginBottom: 28,
   },
 
   title: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: '700',
     color: '#111827',
   },
 
   subtitle: {
-    marginTop: 6,
-    fontSize: 15,
+    marginTop: 5,
+    fontSize: 16,
     color: '#6b7280',
   },
 
+  employeeBadge: {
+    alignSelf: 'flex-start',
+    marginTop: 12,
+    backgroundColor: '#e5e7eb',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
+
+  employeeText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#374151',
+  },
+
   sectionTitle: {
-    fontSize: 22,
+    fontSize: 21,
     fontWeight: '700',
-    marginBottom: 15,
+    marginBottom: 14,
     color: '#111827',
   },
 
-  card: {
+  summaryContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 28,
+  },
+
+  summaryCard: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    padding: 16,
+    minHeight: 115,
+    justifyContent: 'center',
+  },
+
+  summaryIndicator: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginBottom: 8,
+  },
+
+  summaryNumber: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#111827',
+  },
+
+  summaryLabel: {
+    marginTop: 2,
+    fontSize: 13,
+    color: '#6b7280',
+  },
+
+  stationCard: {
     backgroundColor: '#ffffff',
     borderRadius: 12,
     padding: 18,
@@ -200,14 +351,20 @@ const styles = StyleSheet.create({
     color: '#111827',
   },
 
+  stationDescription: {
+    marginTop: 3,
+    fontSize: 13,
+    color: '#9ca3af',
+  },
+
   statusIndicator: {
-    width: 14,
-    height: 14,
-    borderRadius: 7,
+    width: 15,
+    height: 15,
+    borderRadius: 8,
   },
 
   statusText: {
-    marginTop: 10,
+    marginTop: 12,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -228,5 +385,19 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 15,
     fontWeight: '600',
+  },
+
+  occupiedInfo: {
+    marginTop: 18,
+    backgroundColor: '#fef2f2',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+  },
+
+  occupiedInfoText: {
+    color: '#991b1b',
+    fontSize: 13,
+    fontWeight: '500',
   },
 });
