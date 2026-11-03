@@ -1,6 +1,6 @@
 # 🏋️ Gym Pole Monitor
 
-> Sistema IoT desenvolvido com Arduino para monitoramento em tempo real da disponibilidade de equipamentos de academia, utilizando sensores ultrassônicos e indicadores luminosos.
+> Sistema IoT desenvolvido com ESP32/Arduino para monitoramento em tempo real da disponibilidade de equipamentos de academia, utilizando sensores ultrassônicos e indicadores luminosos.
 
 ## 📌 Sobre o projeto
 
